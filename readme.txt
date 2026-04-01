@@ -178,6 +178,14 @@ Ao usar este plugin, você concorda com os [Termos de Uso](https://lumiq.io/term
 * Suporte: https://lumiq.io/suporte
 * GitHub: https://github.com/lumiqadmbr-cpu/lumiq-whatsapp-plugin
 
+== Disclaimer ==
+
+This plugin is not affiliated with, associated with, authorized by, endorsed by, or in any way officially connected with WhatsApp, Meta Platforms, Inc., or any of its subsidiaries or affiliates.
+
+WhatsApp and the WhatsApp logo are registered trademarks of Meta Platforms, Inc.
+
+This plugin uses the WhatsApp name to indicate compatibility and integration with the WhatsApp messaging service.
+
 == Credits ==
 
 Desenvolvido com ❤️ pela equipe LUMIQ.
