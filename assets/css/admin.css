@@ -1,0 +1,298 @@
+/* LUMIQ WhatsApp - Admin Styles */
+
+.lumiq-admin-wrap {
+    background: #f0f0f1;
+    margin: -20px -20px 0 -22px;
+    padding: 0;
+}
+
+.lumiq-header {
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 30px 40px;
+    margin: 0 0 30px 0;
+}
+
+.lumiq-header h1 {
+    font-size: 28px;
+    margin: 0 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.lumiq-header .description {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.lumiq-content {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 30px;
+    padding: 0 40px 40px;
+    max-width: 1400px;
+}
+
+.lumiq-main {
+    min-width: 0;
+}
+
+.lumiq-sidebar {
+    position: sticky;
+    top: 32px;
+    align-self: start;
+}
+
+.lumiq-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.lumiq-card h2 {
+    font-size: 18px;
+    margin: 0 0 20px 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #25D366;
+}
+
+.lumiq-card h3 {
+    font-size: 16px;
+    margin: 0 0 15px 0;
+}
+
+/* Input Groups */
+.lumiq-input-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.lumiq-input-group .regular-text {
+    flex: 1;
+}
+
+.lumiq-input-group .button {
+    flex-shrink: 0;
+}
+
+/* API Key Status */
+#lumiq-key-status {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: none;
+}
+
+#lumiq-key-status.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    display: block;
+}
+
+#lumiq-key-status.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    display: block;
+}
+
+#lumiq-key-status.loading {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+    display: block;
+}
+
+/* Toggle Switch */
+.lumiq-toggle {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+}
+
+.lumiq-toggle input[type="checkbox"] {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    appearance: none;
+    background: #ccc;
+    border-radius: 13px;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.lumiq-toggle input[type="checkbox"]:checked {
+    background: #25D366;
+}
+
+.lumiq-toggle input[type="checkbox"]::before {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background: #fff;
+    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.lumiq-toggle input[type="checkbox"]:checked::before {
+    left: 26px;
+}
+
+/* Preview */
+.lumiq-preview {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 300px;
+    position: relative;
+}
+
+.lumiq-preview-phone {
+    background: #fff;
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+.lumiq-preview-screen {
+    background: #f5f5f5;
+    border-radius: 12px;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+#lumiq-preview-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: #25D366;
+    color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#lumiq-preview-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+}
+
+#lumiq-preview-button svg {
+    width: 30px;
+    height: 30px;
+}
+
+/* Help Links */
+.lumiq-help-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.lumiq-help-links li {
+    margin-bottom: 10px;
+}
+
+.lumiq-help-links a {
+    text-decoration: none;
+    color: #2271b1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lumiq-help-links a:hover {
+    color: #135e96;
+}
+
+/* Stats */
+.lumiq-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.lumiq-stat {
+    text-align: center;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.lumiq-stat-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #25D366;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.lumiq-stat-label {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive */
+@media (max-width: 1280px) {
+    .lumiq-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .lumiq-sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 782px) {
+    .lumiq-content {
+        padding: 0 20px 20px;
+    }
+    
+    .lumiq-header {
+        padding: 20px;
+    }
+    
+    .lumiq-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Loading Spinner */
+.lumiq-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: lumiq-spin 0.6s linear infinite;
+}
+
+@keyframes lumiq-spin {
+    to { transform: rotate(360deg); }
+}
