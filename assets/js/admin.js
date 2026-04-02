@@ -1,162 +1,115 @@
-/**
- * LUMIQ WhatsApp - Admin JavaScript
- */
-
-(function($) {
-    'use strict';
-
-    $(document).ready(function() {
+jQuery(document).ready(function($) {
+    
+    // Validar API Key
+    $('#validate-key-btn').on('click', function() {
+        const apiKey = $('#lumiq_api_key').val();
+        const button = $(this);
+        const resultDiv = $('#key-validation-result');
         
-        // Toggle API Key visibility
-        $('#lumiq-toggle-key').on('click', function() {
-            const $input = $('#lumiq_api_key');
-            const type = $input.attr('type');
-            
-            if (type === 'password') {
-                $input.attr('type', 'text');
-                $(this).find('.dashicons').removeClass('dashicons-visibility').addClass('dashicons-hidden');
-            } else {
-                $input.attr('type', 'password');
-                $(this).find('.dashicons').removeClass('dashicons-hidden').addClass('dashicons-visibility');
-            }
-        });
+        if (!apiKey) {
+            resultDiv.removeClass('success').addClass('error').html('Por favor, insira uma API Key!');
+            return;
+        }
         
-        // Validate API Key
-        $('#lumiq-validate-key').on('click', function() {
-            const $button = $(this);
-            const $status = $('#lumiq-key-status');
-            const apiKey = $('#lumiq_api_key').val().trim();
-            
-            if (!apiKey) {
-                showStatus('error', 'Digite uma API Key válida');
-                return;
-            }
-            
-            $button.prop('disabled', true).text('Validando...');
-            showStatus('loading', 'Validando chave com LUMIQ...');
-            
-            $.ajax({
-                url: lumiqAdmin.ajaxurl,
-                type: 'POST',
-                data: {
-                    action: 'lumiq_validate_key',
-                    nonce: lumiqAdmin.nonce,
-                    api_key: apiKey
-                },
-                success: function(response) {
-                    if (response.success) {
-                        showStatus('success', response.data.message);
+        button.prop('disabled', true).text('Validando...');
+        resultDiv.removeClass('success error').html('');
+        
+        $.ajax({
+            url: lumiqAdmin.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'lumiq_validate_key',
+                nonce: lumiqAdmin.nonce,
+                api_key: apiKey
+            },
+            success: function(response) {
+                if (response.success) {
+                    resultDiv.addClass('success').html('✅ ' + response.data.message);
+                    
+                    // Popular dropdown de equipes
+                    if (response.data.teams && response.data.teams.length > 0) {
+                        const select = $('#lumiq_team_id');
+                        select.html('<option value="">Selecione uma equipe...</option>');
                         
-                        // Carregar equipes
-                        if (response.data.teams && response.data.teams.length > 0) {
-                            populateTeams(response.data.teams);
-                            $('#lumiq-team-row').slideDown();
-                        }
+                        response.data.teams.forEach(function(team) {
+                            select.append('<option value="' + team.id + '">' + team.name + '</option>');
+                        });
                         
-                        // Auto-save
-                        setTimeout(function() {
-                            $('#lumiq-settings-form').submit();
-                        }, 1500);
-                    } else {
-                        showStatus('error', response.data.message);
+                        resultDiv.append('<br>✅ ' + response.data.teams.length + ' equipe(s) encontrada(s)');
                     }
-                },
-                error: function() {
-                    showStatus('error', 'Erro de conexão. Verifique sua internet.');
-                },
-                complete: function() {
-                    $button.prop('disabled', false).text('Validar Chave');
+                } else {
+                    resultDiv.addClass('error').html('❌ ' + response.data);
                 }
-            });
-        });
-        
-        // Load teams on page load if API key exists
-        if ($('#lumiq_api_key').val()) {
-            loadTeams();
-        }
-        
-        function loadTeams() {
-            $.ajax({
-                url: lumiqAdmin.ajaxurl,
-                type: 'POST',
-                data: {
-                    action: 'lumiq_get_teams',
-                    nonce: lumiqAdmin.nonce
-                },
-                success: function(response) {
-                    if (response.success && response.data.teams) {
-                        populateTeams(response.data.teams);
-                        $('#lumiq-team-row').show();
-                    }
-                }
-            });
-        }
-        
-        function populateTeams(teams) {
-            const $select = $('#lumiq_team_id');
-            const currentValue = $select.data('current') || $select.val();
-            
-            $select.empty();
-            $select.append('<option value="">Selecione uma equipe...</option>');
-            
-            teams.forEach(function(team) {
-                const selected = team.id === currentValue ? 'selected' : '';
-                $select.append(
-                    `<option value="${team.id}" ${selected}>${team.name} (${team.member_count} vendedores)</option>`
-                );
-            });
-        }
-        
-        function showStatus(type, message) {
-            const $status = $('#lumiq-key-status');
-            $status.removeClass('success error loading').addClass(type);
-            $status.html(message).slideDown();
-        }
-        
-        // Live Preview
-        function updatePreview() {
-            const color = $('#lumiq_button_color').val();
-            const text = $('#lumiq_button_text').val();
-            const position = $('#lumiq_button_position').val();
-            const size = $('#lumiq_button_size').val();
-            
-            const $preview = $('#lumiq-preview-button');
-            
-            // Update color
-            $preview.css('background-color', color);
-            
-            // Update position
-            $preview.css({
-                right: position === 'right' ? '20px' : 'auto',
-                left: position === 'left' ? '20px' : 'auto'
-            });
-            
-            // Update size
-            let buttonSize = 60;
-            if (size === 'small') buttonSize = 50;
-            if (size === 'large') buttonSize = 70;
-            
-            $preview.css({
-                width: buttonSize + 'px',
-                height: buttonSize + 'px'
-            });
-        }
-        
-        // Update preview on change
-        $('#lumiq_button_color, #lumiq_button_text, #lumiq_button_position, #lumiq_button_size').on('change input', updatePreview);
-        
-        // Initialize preview
-        updatePreview();
-        
-        // Form validation
-        $('#lumiq-settings-form').on('submit', function() {
-            const apiKey = $('#lumiq_api_key').val().trim();
-            
-            if (!apiKey) {
-                alert('Por favor, configure uma API Key válida antes de salvar.');
-                return false;
+            },
+            error: function(xhr, status, error) {
+                resultDiv.addClass('error').html('❌ Erro ao validar: ' + error);
+            },
+            complete: function() {
+                button.prop('disabled', false).text('Validar Chave');
             }
         });
     });
-
-})(jQuery);
+    
+    // Carregar Equipes
+    $('#load-teams-btn').on('click', function() {
+        const button = $(this);
+        const select = $('#lumiq_team_id');
+        const apiKey = $('#lumiq_api_key').val();
+        
+        if (!apiKey) {
+            alert('Por favor, configure e valide a API Key primeiro!');
+            return;
+        }
+        
+        button.prop('disabled', true).text('Carregando...');
+        
+        $.ajax({
+            url: lumiqAdmin.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'lumiq_load_teams',
+                nonce: lumiqAdmin.nonce
+            },
+            success: function(response) {
+                if (response.success && response.data.teams) {
+                    select.html('<option value="">Selecione uma equipe...</option>');
+                    
+                    response.data.teams.forEach(function(team) {
+                        select.append('<option value="' + team.id + '">' + team.name + '</option>');
+                    });
+                    
+                    alert('✅ ' + response.data.teams.length + ' equipe(s) carregada(s)!');
+                } else {
+                    alert('❌ ' + (response.data || 'Erro ao carregar equipes'));
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Erro completo:', xhr.responseText);
+                alert('❌ Erro ao carregar equipes: ' + error);
+            },
+            complete: function() {
+                button.prop('disabled', false).text('Carregar Equipes');
+            }
+        });
+    });
+    
+    // Atualizar preview ao mudar cor/tamanho/posição
+    $('input[name="lumiq_button_color"]').on('change', function() {
+        $('#lumiq-preview-button').css('background-color', $(this).val());
+    });
+    
+    $('select[name="lumiq_button_size"]').on('change', function() {
+        const sizes = { small: '50px', medium: '60px', large: '70px' };
+        const size = sizes[$(this).val()];
+        $('#lumiq-preview-button').css({ width: size, height: size });
+    });
+    
+    $('select[name="lumiq_button_position"]').on('change', function() {
+        const preview = $('#lumiq-preview-button');
+        if ($(this).val() === 'left') {
+            preview.css({ left: '20px', right: 'auto' });
+        } else {
+            preview.css({ right: '20px', left: 'auto' });
+        }
+    });
+});
