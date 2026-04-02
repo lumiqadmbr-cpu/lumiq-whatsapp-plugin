@@ -26,7 +26,7 @@ class Lumiq_Admin {
             'manage_options',
             'lumiq-whatsapp',
             array($this, 'settings_page'),
-            'dashicons-whatsapp',
+            'dashicons-format-chat',
             30
         );
     }
@@ -193,6 +193,9 @@ class Lumiq_Admin {
                         <td>
                             <select name="lumiq_team_id" id="lumiq_team_id" class="regular-text">
                                 <option value="">Selecione uma equipe...</option>
+                                <?php if ($team_id): ?>
+                                <option value="<?php echo esc_attr($team_id); ?>" selected>Equipe Selecionada</option>
+                                <?php endif; ?>
                             </select>
                             <button type="button" id="load-teams-btn" class="button">Carregar Equipes</button>
                             <p class="description">Os leads capturados serão distribuídos para vendedores desta equipe</p>
