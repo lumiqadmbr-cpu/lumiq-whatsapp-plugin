@@ -1,163 +1,370 @@
-/* Botão Flutuante WhatsApp - Estilo Click to Chat */
-#lumiq-whatsapp-button {
+/* LUMIQ WhatsApp - Frontend Styles */
+
+/* Widget Button */
+.lumiq-widget {
     position: fixed;
     bottom: 20px;
     z-index: 999999;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: #25D366;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease;
-    border: none;
-    outline: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-#lumiq-whatsapp-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-}
-
-#lumiq-whatsapp-button svg {
-    width: 35px;
-    height: 35px;
-    fill: white;
-}
-
-/* Posição Left */
-#lumiq-whatsapp-button.position-left {
-    left: 20px;
-}
-
-/* Posição Right */
-#lumiq-whatsapp-button.position-right {
+.lumiq-widget[data-position="right"] {
     right: 20px;
 }
 
-/* Tamanhos */
-#lumiq-whatsapp-button.size-small {
-    width: 50px;
-    height: 50px;
+.lumiq-widget[data-position="left"] {
+    left: 20px;
 }
 
-#lumiq-whatsapp-button.size-small svg {
+.lumiq-widget-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--lumiq-color, #25D366);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+}
+
+.lumiq-widget-button:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.6);
+}
+
+.lumiq-widget-button:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.lumiq-widget-icon {
     width: 28px;
     height: 28px;
+    flex-shrink: 0;
 }
 
-#lumiq-whatsapp-button.size-medium {
-    width: 60px;
-    height: 60px;
+.lumiq-widget-text {
+    white-space: nowrap;
 }
 
-#lumiq-whatsapp-button.size-medium svg {
-    width: 35px;
-    height: 35px;
+/* Size Variations */
+.lumiq-widget-button[data-size="small"] {
+    padding: 12px 18px;
+    font-size: 14px;
 }
 
-#lumiq-whatsapp-button.size-large {
-    width: 70px;
-    height: 70px;
+.lumiq-widget-button[data-size="small"] .lumiq-widget-icon {
+    width: 22px;
+    height: 22px;
 }
 
-#lumiq-whatsapp-button.size-large svg {
-    width: 42px;
-    height: 42px;
+.lumiq-widget-button[data-size="large"] {
+    padding: 18px 28px;
+    font-size: 18px;
 }
 
-/* Modal do Formulário */
-#lumiq-modal {
-    display: none;
+.lumiq-widget-button[data-size="large"] .lumiq-widget-icon {
+    width: 32px;
+    height: 32px;
+}
+
+/* Modal */
+.lumiq-modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 1000000;
+    z-index: 9999999;
+    display: flex;
     align-items: center;
     justify-content: center;
+    padding: 20px;
 }
 
-#lumiq-modal.active {
-    display: flex;
+.lumiq-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    animation: lumiqFadeIn 0.3s;
 }
 
-#lumiq-modal-content {
-    background: white;
+.lumiq-modal-content {
+    position: relative;
+    background: #fff;
     border-radius: 16px;
-    padding: 30px;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-}
-
-#lumiq-modal h3 {
-    margin: 0 0 20px;
-    font-size: 24px;
-    color: #333;
-}
-
-#lumiq-modal input,
-#lumiq-modal textarea {
+    max-width: 480px;
     width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 14px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: lumiqSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#lumiq-modal button {
-    width: 100%;
-    padding: 14px;
-    background: #25D366;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-#lumiq-modal button:hover {
-    background: #1da851;
-}
-
-#lumiq-modal-close {
+.lumiq-modal-close {
     position: absolute;
     top: 15px;
     right: 15px;
-    background: transparent;
+    width: 36px;
+    height: 36px;
     border: none;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 50%;
     font-size: 24px;
+    line-height: 1;
+    color: #666;
     cursor: pointer;
-    color: #999;
-    width: auto;
-    padding: 0;
+    transition: all 0.2s;
+    z-index: 1;
 }
 
-#lumiq-modal-close:hover {
+.lumiq-modal-close:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #000;
+    transform: rotate(90deg);
+}
+
+/* Modal Header */
+.lumiq-modal-header {
+    text-align: center;
+    padding: 40px 30px 30px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #fff;
+}
+
+.lumiq-modal-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.lumiq-modal-header h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 8px 0;
+}
+
+.lumiq-modal-header p {
+    font-size: 14px;
+    margin: 0;
+    opacity: 0.95;
+}
+
+/* Form */
+.lumiq-form {
+    padding: 30px;
+}
+
+.lumiq-form-group {
+    margin-bottom: 20px;
+}
+
+.lumiq-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
     color: #333;
-    background: transparent;
 }
 
-/* Responsivo */
-@media (max-width: 768px) {
-    #lumiq-whatsapp-button {
+.lumiq-form-group input,
+.lumiq-form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+    transition: all 0.2s;
+    outline: none;
+}
+
+.lumiq-form-group input:focus,
+.lumiq-form-group textarea:focus {
+    border-color: #25D366;
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+}
+
+.lumiq-form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.lumiq-form-submit {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.lumiq-form-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+}
+
+.lumiq-form-submit:active {
+    transform: translateY(0);
+}
+
+.lumiq-form-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.lumiq-form-privacy {
+    margin-top: 15px;
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+}
+
+/* Success Message */
+.lumiq-success {
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.lumiq-success-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: bold;
+    animation: lumiqPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.lumiq-success h3 {
+    font-size: 24px;
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.lumiq-success p {
+    margin: 0 0 10px 0;
+    color: #666;
+}
+
+.lumiq-redirect-msg {
+    font-size: 14px;
+    color: #25D366;
+    font-weight: 600;
+}
+
+/* Animations */
+@keyframes lumiqFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes lumiqSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes lumiqPop {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Spinner */
+.lumiq-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: lumiqSpin 0.6s linear infinite;
+}
+
+@keyframes lumiqSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+    .lumiq-widget {
         bottom: 15px;
     }
     
-    #lumiq-whatsapp-button.position-left {
+    .lumiq-widget[data-position="right"] {
+        right: 15px;
+    }
+    
+    .lumiq-widget[data-position="left"] {
         left: 15px;
     }
     
-    #lumiq-whatsapp-button.position-right {
-        right: 15px;
+    .lumiq-widget-button {
+        padding: 12px 20px;
+        font-size: 15px;
     }
+    
+    .lumiq-widget-text {
+        display: none;
+    }
+    
+    .lumiq-widget-button {
+        border-radius: 50%;
+        width: 56px;
+        height: 56px;
+        padding: 0;
+        justify-content: center;
+    }
+    
+    .lumiq-modal {
+        padding: 10px;
+    }
+    
+    .lumiq-modal-content {
+        max-height: 95vh;
+    }
+    
+    .lumiq-form {
+        padding: 20px;
+    }
+}
+
+/* Accessibility */
+.lumiq-widget-button:focus-visible,
+.lumiq-modal-close:focus-visible,
+.lumiq-form-submit:focus-visible {
+    outline: 3px solid #25D366;
+    outline-offset: 2px;
 }
