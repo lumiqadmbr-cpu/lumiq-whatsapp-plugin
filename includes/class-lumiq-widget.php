@@ -1,6 +1,6 @@
 <?php
 /**
- * Widget (botão flutuante) do frontend
+ * Classe Widget (Botão Flutuante) do LUMIQ WhatsApp
  */
 
 if (!defined('ABSPATH')) {
@@ -9,26 +9,14 @@ if (!defined('ABSPATH')) {
 
 class Lumiq_Widget {
     
-    private $api;
-    
     public function __construct() {
-        $this->api = new Lumiq_API();
-        
-        // Renderizar widget no footer
-        add_action('wp_footer', array($this, 'render_widget'));
-        
-        // AJAX handlers para frontend
-        add_action('wp_ajax_lumiq_capture_lead', array($this, 'ajax_capture_lead'));
-        add_action('wp_ajax_nopriv_lumiq_capture_lead', array($this, 'ajax_capture_lead'));
-        
-        add_action('wp_ajax_lumiq_track_click', array($this, 'ajax_track_click'));
-        add_action('wp_ajax_nopriv_lumiq_track_click', array($this, 'ajax_track_click'));
+        add_action('wp_footer', array($this, 'render_button'));
     }
     
     /**
-     * Renderizar widget no footer
+     * Renderizar botão flutuante
      */
-    public function render_widget() {
+    public function render_button() {
         // Verificar se está habilitado
         if (!get_option('lumiq_enabled')) {
             return;
@@ -39,128 +27,111 @@ class Lumiq_Widget {
             return;
         }
         
-        $button_text = get_option('lumiq_button_text', 'Fale Conosco');
+        // Verificar se tem equipe selecionada
+        if (empty(get_option('lumiq_team_id'))) {
+            return;
+        }
+        
+        $position = get_option('lumiq_button_position', 'right');
+        $color = get_option('lumiq_button_color', '#25D366');
+        $size = get_option('lumiq_button_size', 'medium');
         $capture_type = get_option('lumiq_capture_type', 'form');
         
         ?>
-        <!-- LUMIQ WhatsApp Widget -->
-        <div id="lumiq-widget" class="lumiq-widget" data-capture-type="<?php echo esc_attr($capture_type); ?>">
-            <button id="lumiq-widget-button" class="lumiq-widget-button" aria-label="<?php echo esc_attr($button_text); ?>">
-                <svg viewBox="0 0 32 32" class="lumiq-widget-icon">
-                    <path fill="currentColor" d="M16 0C7.163 0 0 7.163 0 16c0 2.825.737 5.477 2.024 7.777L.08 30.105l6.528-1.904A15.923 15.923 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.547 0-4.955-.717-7.011-1.952l-.501-.296-5.189 1.515 1.54-5.024-.325-.52A13.276 13.276 0 012.667 16c0-7.363 5.971-13.333 13.333-13.333S29.333 8.637 29.333 16 23.363 29.333 16 29.333z"/>
-                    <path fill="currentColor" d="M22.838 18.638c-.375-.187-2.225-1.1-2.575-1.225-.35-.125-.6-.187-.85.187-.25.375-.975 1.225-1.2 1.475-.225.25-.45.275-.825.1-.375-.187-1.587-.588-3.025-1.875-1.125-1-1.875-2.225-2.1-2.6-.225-.375-.025-.575.162-.762.163-.163.375-.425.562-.638.188-.212.25-.375.375-.625s.063-.475-.037-.663c-.1-.187-.85-2.05-1.163-2.8-.312-.75-.625-.65-.85-.65-.225 0-.475-.025-.725-.025s-.675.1-.975.475-.975.95-.975 2.325.975 2.7 1.113 2.888c.137.187 1.975 3.012 4.787 4.225.663.287 1.188.462 1.588.587.675.213 1.288.187 1.775.113.538-.088 1.65-.675 1.888-1.325.237-.65.237-1.2.162-1.325-.075-.125-.275-.2-.625-.375z"/>
-                </svg>
-                <span class="lumiq-widget-text"><?php echo esc_html($button_text); ?></span>
-            </button>
+        <!-- LUMIQ WhatsApp Button -->
+        <div id="lumiq-whatsapp-button" 
+             class="position-<?php echo esc_attr($position); ?> size-<?php echo esc_attr($size); ?>"
+             style="background-color: <?php echo esc_attr($color); ?>;">
+            <svg viewBox="0 0 24 24" fill="white">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
         </div>
         
         <?php if ($capture_type === 'form'): ?>
-        <!-- Modal de Formulário -->
-        <div id="lumiq-modal" class="lumiq-modal" style="display: none;">
-            <div class="lumiq-modal-overlay"></div>
-            <div class="lumiq-modal-content">
-                <button class="lumiq-modal-close" aria-label="Fechar">×</button>
-                
-                <div class="lumiq-modal-header">
-                    <svg viewBox="0 0 32 32" class="lumiq-modal-icon">
-                        <path fill="currentColor" d="M16 0C7.163 0 0 7.163 0 16c0 2.825.737 5.477 2.024 7.777L.08 30.105l6.528-1.904A15.923 15.923 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.547 0-4.955-.717-7.011-1.952l-.501-.296-5.189 1.515 1.54-5.024-.325-.52A13.276 13.276 0 012.667 16c0-7.363 5.971-13.333 13.333-13.333S29.333 8.637 29.333 16 23.363 29.333 16 29.333z"/>
-                    </svg>
-                    <h3>Fale Conosco</h3>
-                    <p>Preencha os dados abaixo e nossa equipe entrará em contato</p>
-                </div>
-                
-                <form id="lumiq-form" class="lumiq-form">
-                    <div class="lumiq-form-group">
-                        <label for="lumiq-name">Nome *</label>
-                        <input type="text" id="lumiq-name" name="name" required placeholder="Seu nome">
-                    </div>
-                    
-                    <div class="lumiq-form-group">
-                        <label for="lumiq-phone">WhatsApp *</label>
-                        <input type="tel" id="lumiq-phone" name="phone" required placeholder="(00) 00000-0000">
-                    </div>
-                    
-                    <div class="lumiq-form-group">
-                        <label for="lumiq-email">Email</label>
-                        <input type="email" id="lumiq-email" name="email" placeholder="seu@email.com">
-                    </div>
-                    
-                    <div class="lumiq-form-group">
-                        <label for="lumiq-message">Mensagem</label>
-                        <textarea id="lumiq-message" name="message" rows="3" placeholder="Como podemos ajudar?"></textarea>
-                    </div>
-                    
-                    <button type="submit" class="lumiq-form-submit">
-                        <span class="lumiq-submit-text">Enviar Mensagem</span>
-                        <span class="lumiq-submit-loading" style="display: none;">
-                            <span class="lumiq-spinner"></span> Enviando...
-                        </span>
-                    </button>
-                    
-                    <p class="lumiq-form-privacy">
-                        Seus dados estão protegidos e serão usados apenas para contato.
-                    </p>
+        <!-- Modal do Formulário -->
+        <div id="lumiq-modal">
+            <div id="lumiq-modal-content" style="position: relative;">
+                <button id="lumiq-modal-close">&times;</button>
+                <h3>Fale Conosco</h3>
+                <form id="lumiq-form">
+                    <input type="text" id="lumiq-name" placeholder="Seu nome *" required>
+                    <input type="tel" id="lumiq-phone" placeholder="Seu WhatsApp *" required>
+                    <input type="email" id="lumiq-email" placeholder="Seu email">
+                    <textarea id="lumiq-message" rows="3" placeholder="Sua mensagem"></textarea>
+                    <button type="submit">Enviar Mensagem</button>
                 </form>
-                
-                <div id="lumiq-success" class="lumiq-success" style="display: none;">
-                    <div class="lumiq-success-icon">✓</div>
-                    <h3>Mensagem enviada!</h3>
-                    <p>Em breve nossa equipe entrará em contato via WhatsApp.</p>
-                    <p class="lumiq-redirect-msg">Redirecionando para o WhatsApp...</p>
-                </div>
             </div>
         </div>
         <?php endif; ?>
-        <!-- /LUMIQ WhatsApp Widget -->
+        
+        <script>
+        jQuery(document).ready(function($) {
+            const button = $('#lumiq-whatsapp-button');
+            const modal = $('#lumiq-modal');
+            const closeBtn = $('#lumiq-modal-close');
+            const captureType = '<?php echo esc_js($capture_type); ?>';
+            
+            // Click no botão
+            button.on('click', function() {
+                if (captureType === 'direct') {
+                    // Redirecionar direto para captura
+                    window.location.href = lumiqConfig.apiUrl + '/capture?api_key=' + lumiqConfig.apiKey + '&team_id=' + lumiqConfig.teamId;
+                } else {
+                    // Abrir modal
+                    modal.addClass('active');
+                }
+            });
+            
+            // Fechar modal
+            closeBtn.on('click', function() {
+                modal.removeClass('active');
+            });
+            
+            // Fechar modal ao clicar fora
+            modal.on('click', function(e) {
+                if (e.target === this) {
+                    modal.removeClass('active');
+                }
+            });
+            
+            // Submit do formulário
+            $('#lumiq-form').on('submit', function(e) {
+                e.preventDefault();
+                
+                const name = $('#lumiq-name').val();
+                const phone = $('#lumiq-phone').val();
+                const email = $('#lumiq-email').val();
+                const message = $('#lumiq-message').val();
+                
+                // Enviar para API
+                $.ajax({
+                    url: lumiqConfig.apiUrl + '/capture',
+                    type: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': lumiqConfig.apiKey
+                    },
+                    data: JSON.stringify({
+                        name: name,
+                        phone: phone,
+                        email: email,
+                        message: message,
+                        team_id: lumiqConfig.teamId
+                    }),
+                    success: function(response) {
+                        if (response.success && response.whatsapp_url) {
+                            window.location.href = response.whatsapp_url;
+                        } else {
+                            alert('Erro ao enviar. Tente novamente.');
+                        }
+                    },
+                    error: function() {
+                        alert('Erro ao enviar. Tente novamente.');
+                    }
+                });
+            });
+        });
+        </script>
         <?php
-    }
-    
-    /**
-     * AJAX: Capturar lead
-     */
-    public function ajax_capture_lead() {
-        check_ajax_referer('lumiq_frontend_nonce', 'nonce');
-        
-        // Sanitizar dados
-        $lead_data = $this->api->sanitize_lead_data(array(
-            'name' => $_POST['name'] ?? '',
-            'phone' => $_POST['phone'] ?? '',
-            'email' => $_POST['email'] ?? '',
-            'message' => $_POST['message'] ?? '',
-            'team_id' => get_option('lumiq_team_id'),
-            'page_url' => $_POST['page_url'] ?? '',
-            'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? ''
-        ));
-        
-        // Validar campos obrigatórios
-        if (empty($lead_data['name']) || empty($lead_data['phone'])) {
-            wp_send_json_error(array('message' => 'Nome e telefone são obrigatórios'));
-        }
-        
-        // Enviar para API LUMIQ
-        $result = $this->api->capture_lead($lead_data);
-        
-        if ($result && isset($result['success'])) {
-            wp_send_json_success(array(
-                'message' => 'Lead capturado com sucesso!',
-                'whatsapp_url' => $result['whatsapp_url'] ?? '',
-                'whatsapp_number' => $result['whatsapp_number'] ?? ''
-            ));
-        } else {
-            wp_send_json_error(array(
-                'message' => $result['message'] ?? 'Erro ao capturar lead. Tente novamente.'
-            ));
-        }
-    }
-    
-    /**
-     * AJAX: Registrar clique
-     */
-    public function ajax_track_click() {
-        check_ajax_referer('lumiq_frontend_nonce', 'nonce');
-        
-        $this->api->track_click();
-        
-        wp_send_json_success();
     }
 }
