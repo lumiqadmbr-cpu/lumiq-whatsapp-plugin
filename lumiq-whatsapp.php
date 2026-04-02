@@ -3,7 +3,7 @@
  * Plugin Name: LUMIQ WhatsApp
  * Plugin URI: https://lumiq.io
  * Description: Distribua leads automaticamente para sua equipe de vendas via WhatsApp
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: LUMIQ
  * Author URI: https://lumiq.io
  * License: GPL v2 or later
@@ -20,14 +20,14 @@ if (!defined('ABSPATH')) {
 }
 
 // Constantes do plugin
-define('LUMIQ_VERSION', '1.0.0');
+define('LUMIQ_VERSION', '1.0.1');
 define('LUMIQ_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('LUMIQ_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('LUMIQ_PLUGIN_BASENAME', plugin_basename(__FILE__));
 
-// URL da API LUMIQ (ajuste conforme seu domínio)
+// URL da API LUMIQ - CORRIGIDA!
 if (!defined('LUMIQ_API_URL')) {
-    define('LUMIQ_API_URL', 'https://lumiq.io/api/wordpress');
+    define('LUMIQ_API_URL', 'https://lumiq-smoky.vercel.app/api/wordpress');
 }
 
 // Carregar classes
