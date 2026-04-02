@@ -1,0 +1,90 @@
+/**
+ * LUMIQ WhatsApp - Admin Styles
+ */
+
+/* Help Box */
+.lumiq-help-box {
+    background: #f0f6fc;
+    border: 1px solid #d0e4f7;
+    border-left: 4px solid #25D366;
+    padding: 20px;
+    border-radius: 4px;
+    margin-top: 30px;
+}
+
+.lumiq-help-box h2 {
+    margin-top: 0;
+    color: #1e4620;
+    font-size: 18px;
+}
+
+.lumiq-help-box h3 {
+    color: #2c5e2e;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.lumiq-help-box ol,
+.lumiq-help-box ul {
+    margin-left: 20px;
+}
+
+.lumiq-help-box li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+.lumiq-help-box a {
+    color: #25D366;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.lumiq-help-box a:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */
+#lumiq_validate_key,
+#lumiq_load_teams {
+    background: #25D366 !important;
+    border-color: #20BA5A !important;
+    color: white !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+}
+
+#lumiq_validate_key:hover,
+#lumiq_load_teams:hover {
+    background: #20BA5A !important;
+    border-color: #1da851 !important;
+}
+
+#lumiq_validate_key:disabled,
+#lumiq_load_teams:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Status Messages */
+#lumiq_validate_status {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Select destacado */
+#lumiq_team_id:focus {
+    border-color: #25D366;
+    box-shadow: 0 0 0 1px #25D366;
+}
+
+/* Loading Spinner */
+#lumiq_teams_loading .spinner {
+    background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="%2325D366" stroke-width="2" stroke-dasharray="50" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 10 10" to="360 10 10" dur="1s" repeatCount="indefinite"/></circle></svg>') center center no-repeat;
+    background-size: 20px 20px;
+}
+
+/* Notice customizado */
+.notice.notice-success {
+    border-left-color: #25D366;
+}
