@@ -6,9 +6,28 @@
 jQuery(document).ready(function($) {
     
     /**
+     * Botão "Ver/Ocultar" API Key (OLHINHO)
+     */
+    $('#lumiq_toggle_key').on('click', function(e) {
+        e.preventDefault();
+        const $input = $('#lumiq_api_key');
+        const $icon = $(this).find('.dashicons');
+        
+        if ($input.attr('type') === 'password') {
+            $input.attr('type', 'text');
+            $icon.removeClass('dashicons-visibility').addClass('dashicons-hidden');
+        } else {
+            $input.attr('type', 'password');
+            $icon.removeClass('dashicons-hidden').addClass('dashicons-visibility');
+        }
+    });
+    
+    /**
      * Botão "Validar" API Key
      */
-    $('#lumiq_validate_key').on('click', function() {
+    $('#lumiq_validate_key').on('click', function(e) {
+        e.preventDefault();
+        
         const apiKey = $('#lumiq_api_key').val().trim();
         const $button = $(this);
         const $status = $('#lumiq_validate_status');
@@ -31,6 +50,8 @@ jQuery(document).ready(function($) {
                 api_key: apiKey
             },
             success: function(response) {
+                console.log('Validate response:', response);
+                
                 if (response.success) {
                     $status.html('<span style="color: #28a745;">✅ ' + response.data.message + '</span>');
                     
@@ -40,11 +61,12 @@ jQuery(document).ready(function($) {
                     }, 500);
                     
                 } else {
-                    $status.html('<span style="color: #dc3545;">❌ ' + response.data.message + '</span>');
+                    $status.html('<span style="color: #dc3545;">❌ ' + (response.data.message || 'Chave inválida') + '</span>');
                 }
             },
-            error: function() {
-                $status.html('<span style="color: #dc3545;">❌ Erro de conexão</span>');
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', xhr.responseText);
+                $status.html('<span style="color: #dc3545;">❌ Erro de conexão: ' + error + '</span>');
             },
             complete: function() {
                 $button.prop('disabled', false).text('Validar');
@@ -55,7 +77,9 @@ jQuery(document).ready(function($) {
     /**
      * Botão "Carregar Equipes"
      */
-    $('#lumiq_load_teams').on('click', function() {
+    $('#lumiq_load_teams').on('click', function(e) {
+        e.preventDefault();
+        
         const apiKey = $('#lumiq_api_key').val().trim();
         const $button = $(this);
         const $select = $('#lumiq_team_id');
@@ -80,6 +104,8 @@ jQuery(document).ready(function($) {
                 api_key: apiKey
             },
             success: function(response) {
+                console.log('Teams response:', response);
+                
                 if (response.success && response.data.teams) {
                     const teams = response.data.teams;
                     
@@ -129,31 +155,14 @@ jQuery(document).ready(function($) {
                 }
             },
             error: function(xhr, status, error) {
-                console.error('LUMIQ Error:', error);
-                showNotice('❌ Erro ao conectar com a API LUMIQ', 'error');
+                console.error('AJAX Error:', xhr.responseText);
+                showNotice('❌ Erro ao conectar: ' + error, 'error');
             },
             complete: function() {
                 $button.prop('disabled', false);
                 $loading.hide();
             }
         });
-    });
-    
-    /**
-     * Botão "Ver/Ocultar" API Key (OLHINHO)
-     */
-    $('#lumiq_toggle_key').on('click', function(e) {
-        e.preventDefault();
-        const $input = $('#lumiq_api_key');
-        const $icon = $(this).find('.dashicons');
-        
-        if ($input.attr('type') === 'password') {
-            $input.attr('type', 'text');
-            $icon.removeClass('dashicons-visibility').addClass('dashicons-hidden');
-        } else {
-            $input.attr('type', 'password');
-            $icon.removeClass('dashicons-hidden').addClass('dashicons-visibility');
-        }
     });
     
     /**
@@ -198,12 +207,16 @@ jQuery(document).ready(function($) {
         }
         
         if (!teamId) {
-            e.preventDefault();
-            alert('⚠️ Por favor, selecione uma equipe!');
-            $('#lumiq_team_id').focus();
-            return false;
+            const confirmSubmit = confirm('⚠️ Nenhuma equipe selecionada. Leads não serão distribuídos! Continuar mesmo assim?');
+            if (!confirmSubmit) {
+                e.preventDefault();
+                return false;
+            }
         }
         
         return true;
     });
+    
+    // Debug: Verificar se lumiqAdmin existe
+    console.log('LUMIQ Admin Data:', lumiqAdmin);
 });
