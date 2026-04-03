@@ -16,9 +16,46 @@ class Lumiq_Admin {
         
         add_action('admin_menu', array($this, 'add_menu'));
         add_action('admin_init', array($this, 'register_settings'));
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_admin_scripts'));
         add_action('wp_ajax_lumiq_validate_key', array($this, 'ajax_validate_key'));
         add_action('wp_ajax_lumiq_get_teams', array($this, 'ajax_get_teams'));
         add_action('admin_notices', array($this, 'admin_notices'));
+    }
+    
+    /**
+     * Carregar scripts e estilos do admin
+     */
+    public function enqueue_admin_scripts($hook) {
+        // Só carregar na página do plugin
+        if ($hook != 'toplevel_page_lumiq-whatsapp') {
+            return;
+        }
+        
+        // jQuery (garantir que está carregado)
+        wp_enqueue_script('jquery');
+        
+        // CSS do admin
+        wp_enqueue_style(
+            'lumiq-admin-css',
+            LUMIQ_PLUGIN_URL . 'assets/admin.css',
+            array(),
+            LUMIQ_VERSION
+        );
+        
+        // JS do admin
+        wp_enqueue_script(
+            'lumiq-admin-js',
+            LUMIQ_PLUGIN_URL . 'assets/admin.js',
+            array('jquery'),
+            LUMIQ_VERSION,
+            true
+        );
+        
+        // Passar dados para o JavaScript
+        wp_localize_script('lumiq-admin-js', 'lumiqAdmin', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('lumiq_admin_nonce')
+        ));
     }
     
     /**
@@ -232,10 +269,10 @@ class Lumiq_Admin {
                                                    value="<?php echo esc_attr($api_key); ?>" 
                                                    class="regular-text lumiq-api-key"
                                                    placeholder="lumiq_live_XXXXXXXXXXXX">
-                                            <button type="button" id="lumiq-validate-key" class="button">
-                                                Validar Chave
+                                            <button type="button" id="lumiq_validate_key" class="button">
+                                                Validar
                                             </button>
-                                            <button type="button" id="lumiq-toggle-key" class="button">
+                                            <button type="button" id="lumiq_toggle_key" class="button">
                                                 <span class="dashicons dashicons-visibility"></span>
                                             </button>
                                         </div>
@@ -243,7 +280,7 @@ class Lumiq_Admin {
                                             Cole sua chave API gerada no painel LUMIQ. 
                                             <a href="https://lumiq-smoky.vercel.app/dashboard/wordpress" target="_blank">Gerar chave →</a>
                                         </p>
-                                        <div id="lumiq-key-status"></div>
+                                        <div id="lumiq_validate_status"></div>
                                     </td>
                                 </tr>
                                 
@@ -253,11 +290,17 @@ class Lumiq_Admin {
                                     </th>
                                     <td>
                                         <select id="lumiq_team_id" name="lumiq_team_id" class="regular-text">
-                                            <option value="">Carregando equipes...</option>
+                                            <option value="">Selecione uma equipe...</option>
                                             <?php if ($team_id): ?>
                                             <option value="<?php echo esc_attr($team_id); ?>" selected>Equipe Selecionada</option>
                                             <?php endif; ?>
                                         </select>
+                                        <button type="button" id="lumiq_load_teams" class="button" style="margin-left: 10px;">
+                                            Carregar Equipes
+                                        </button>
+                                        <span id="lumiq_teams_loading" style="display:none; margin-left: 10px;">
+                                            <span class="spinner is-active" style="float: none; margin: 0;"></span>
+                                        </span>
                                         <p class="description">Escolha qual equipe receberá os leads deste site</p>
                                     </td>
                                 </tr>
@@ -429,13 +472,6 @@ class Lumiq_Admin {
                 </div>
             </div>
         </div>
-        
-        <style>
-            #lumiq-key-status { margin-top: 10px; padding: 10px; border-radius: 4px; display: none; }
-            #lumiq-key-status.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; display: block; }
-            #lumiq-key-status.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; display: block; }
-            #lumiq-key-status.loading { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; display: block; }
-        </style>
         <?php
     }
     
