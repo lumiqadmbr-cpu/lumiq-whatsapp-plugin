@@ -13,6 +13,8 @@ class Lumiq_Widget {
     
     public function __construct() {
         $this->api = new Lumiq_API();
+
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_assets'));
         
         // Renderizar widget no footer
         add_action('wp_footer', array($this, 'render_widget'));
@@ -23,6 +25,45 @@ class Lumiq_Widget {
         
         add_action('wp_ajax_lumiq_track_click', array($this, 'ajax_track_click'));
         add_action('wp_ajax_nopriv_lumiq_track_click', array($this, 'ajax_track_click'));
+    }
+
+    /**
+     * Carregar CSS e JS do frontend
+     */
+    public function enqueue_frontend_assets() {
+        // Só carrega se estiver habilitado
+        if (!get_option('lumiq_enabled')) {
+            return;
+        }
+        
+        // Só carrega se tiver API Key
+        if (empty(get_option('lumiq_api_key'))) {
+            return;
+        }
+        
+        // CSS do widget
+        wp_enqueue_style(
+            'lumiq-frontend-css',
+            LUMIQ_PLUGIN_URL . 'assets/css/frontend.css',
+            array(),
+            time()
+        );
+        
+        // JS do widget
+        wp_enqueue_script(
+            'lumiq-frontend-js',
+            LUMIQ_PLUGIN_URL . 'assets/js/frontend.js',
+            array('jquery'),
+            time(),
+            true
+        );
+        
+        // Passar dados para o JavaScript
+        wp_localize_script('lumiq-frontend-js', 'lumiqFrontend', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('lumiq_frontend_nonce'),
+            'capture_type' => get_option('lumiq_capture_type', 'form')
+        ));
     }
     
     /**
