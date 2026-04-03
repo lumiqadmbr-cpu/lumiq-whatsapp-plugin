@@ -45,7 +45,7 @@ class Lumiq_Admin {
         // JS do admin
         wp_enqueue_script(
             'lumiq-admin-js',
-            LUMIQ_PLUGIN_URL . 'assets/admin.js',
+            LUMIQ_PLUGIN_URL . 'assets/js/admin.js',
             array('jquery'),
             LUMIQ_VERSION,
             true
