@@ -1,49 +1,127 @@
 /* LUMIQ WhatsApp - Frontend Styles */
 
-/* Widget Button */
-.lumiq-widget {
-    position: fixed;
-    bottom: 20px;
-    z-index: 999999;
+/* ==========================================
+   RESET TOTAL - Sobrescreve QUALQUER estilo do tema
+   ========================================== */
+
+.lumiq-widget,
+.lumiq-widget *,
+#lumiq-widget,
+#lumiq-widget * {
+    box-sizing: border-box !important;
 }
 
-.lumiq-widget[data-position="right"] {
-    right: 20px;
+.lumiq-widget,
+#lumiq-widget {
+    all: initial !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    z-index: 999999 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
 }
 
-.lumiq-widget[data-position="left"] {
-    left: 20px;
+.lumiq-widget[data-position="right"],
+#lumiq-widget[data-position="right"] {
+    right: 20px !important;
 }
 
-/* Botão redondo estilo WhatsApp */
-.lumiq-widget-button {
-    width: 60px;
-    height: 60px;
-    background: var(--lumiq-color, #25D366);
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    outline: none;
+.lumiq-widget[data-position="left"],
+#lumiq-widget[data-position="left"] {
+    left: 20px !important;
+}
+
+/* ==========================================
+   BOTÃO REDONDO ESTILO WHATSAPP
+   ========================================== */
+
+.lumiq-widget-button,
+#lumiq-widget-button,
+.lumiq-widget button,
+#lumiq-widget button {
+    all: unset !important;
+    box-sizing: border-box !important;
+    
+    /* Dimensões */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 60px !important;
+    height: 60px !important;
+    min-width: 60px !important;
+    min-height: 60px !important;
+    max-width: 60px !important;
+    max-height: 60px !important;
+    
+    /* Background */
+    background: #25D366 !important;
+    background-color: #25D366 !important;
+    background-image: none !important;
+    
+    /* Bordas */
+    border: none !important;
+    border-width: 0 !important;
+    border-style: none !important;
+    border-color: transparent !important;
+    border-radius: 50% !important;
+    
+    /* Sombra */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    
+    /* Comportamento */
+    cursor: pointer !important;
+    position: relative !important;
+    outline: none !important;
+    outline-width: 0 !important;
+    
+    /* Espaçamento */
+    padding: 0 !important;
+    margin: 0 !important;
+    
+    /* Texto */
+    font-size: 0 !important;
+    line-height: 1 !important;
+    color: #fff !important;
+    
+    /* Animação */
+    transition: all 0.3s ease !important;
+    transform: none !important;
+    transform-origin: center !important;
+    
+    /* Remove qualquer coisa estranha */
+    text-decoration: none !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    overflow: visible !important;
+}
+
+/* Remove pseudo-elementos do tema (exceto ::before do pulso) */
+.lumiq-widget-button::after,
+#lumiq-widget-button::after {
+    display: none !important;
+    content: none !important;
+    background: none !important;
 }
 
 /* Animação de pulso */
-.lumiq-widget-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: var(--lumiq-color, #25D366);
-    opacity: 0.4;
-    animation: lumiqPulse 2s infinite;
+.lumiq-widget-button::before,
+#lumiq-widget-button::before {
+    content: '' !important;
+    display: block !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50% !important;
+    background: #25D366 !important;
+    background-color: #25D366 !important;
+    background-image: none !important;
+    opacity: 0.4 !important;
+    animation: lumiqPulse 2s infinite !important;
+    z-index: -1 !important;
+    box-shadow: none !important;
+    border: none !important;
+    pointer-events: none !important;
 }
 
 @keyframes lumiqPulse {
@@ -61,261 +139,322 @@
     }
 }
 
-.lumiq-widget-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+/* Hover */
+.lumiq-widget-button:hover,
+#lumiq-widget-button:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25) !important;
+    background: #20BA5A !important;
+    background-color: #20BA5A !important;
 }
 
-.lumiq-widget-button:active {
-    transform: scale(0.95);
+/* Active */
+.lumiq-widget-button:active,
+#lumiq-widget-button:active {
+    transform: scale(0.95) !important;
 }
 
-/* Ícone */
-.lumiq-widget-icon {
-    width: 32px;
-    height: 32px;
-    color: #fff;
-    position: relative;
-    z-index: 1;
+/* ==========================================
+   ÍCONE DO WHATSAPP
+   ========================================== */
+
+.lumiq-widget-icon,
+#lumiq-widget .lumiq-widget-icon,
+.lumiq-widget-button svg {
+    width: 32px !important;
+    height: 32px !important;
+    color: #fff !important;
+    fill: currentColor !important;
+    position: relative !important;
+    z-index: 1 !important;
+    display: block !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: none !important;
 }
 
-/* Esconder texto (só ícone) */
-.lumiq-widget-text {
-    display: none;
+/* Esconder texto */
+.lumiq-widget-text,
+#lumiq-widget .lumiq-widget-text,
+.lumiq-widget-button span {
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    overflow: hidden !important;
 }
 
-/* Tamanhos */
-.lumiq-widget-button[data-size="small"] {
-    width: 50px;
-    height: 50px;
+/* ==========================================
+   TAMANHOS
+   ========================================== */
+
+/* Pequeno */
+.lumiq-widget-button[data-size="small"],
+#lumiq-widget-button[data-size="small"] {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    min-height: 50px !important;
+    max-width: 50px !important;
+    max-height: 50px !important;
 }
 
-.lumiq-widget-button[data-size="small"] .lumiq-widget-icon {
-    width: 26px;
-    height: 26px;
+.lumiq-widget-button[data-size="small"] .lumiq-widget-icon,
+.lumiq-widget-button[data-size="small"] svg {
+    width: 26px !important;
+    height: 26px !important;
 }
 
-.lumiq-widget-button[data-size="medium"] {
-    width: 60px;
-    height: 60px;
+/* Médio (padrão) */
+.lumiq-widget-button[data-size="medium"],
+#lumiq-widget-button[data-size="medium"] {
+    width: 60px !important;
+    height: 60px !important;
+    min-width: 60px !important;
+    min-height: 60px !important;
+    max-width: 60px !important;
+    max-height: 60px !important;
 }
 
-.lumiq-widget-button[data-size="medium"] .lumiq-widget-icon {
-    width: 32px;
-    height: 32px;
+.lumiq-widget-button[data-size="medium"] .lumiq-widget-icon,
+.lumiq-widget-button[data-size="medium"] svg {
+    width: 32px !important;
+    height: 32px !important;
 }
 
-.lumiq-widget-button[data-size="large"] {
-    width: 70px;
-    height: 70px;
+/* Grande */
+.lumiq-widget-button[data-size="large"],
+#lumiq-widget-button[data-size="large"] {
+    width: 70px !important;
+    height: 70px !important;
+    min-width: 70px !important;
+    min-height: 70px !important;
+    max-width: 70px !important;
+    max-height: 70px !important;
 }
 
-.lumiq-widget-button[data-size="large"] .lumiq-widget-icon {
-    width: 38px;
-    height: 38px;
+.lumiq-widget-button[data-size="large"] .lumiq-widget-icon,
+.lumiq-widget-button[data-size="large"] svg {
+    width: 38px !important;
+    height: 38px !important;
 }
 
-/* Modal */
+/* ==========================================
+   MODAL
+   ========================================== */
+
 .lumiq-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 9999999 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
 }
 
 .lumiq-modal-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
-    animation: lumiqFadeIn 0.3s;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+    backdrop-filter: blur(4px) !important;
+    animation: lumiqFadeIn 0.3s !important;
 }
 
 .lumiq-modal-content {
-    position: relative;
-    background: #fff;
-    border-radius: 16px;
-    max-width: 480px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    animation: lumiqSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative !important;
+    background: #fff !important;
+    border-radius: 16px !important;
+    max-width: 480px !important;
+    width: 100% !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+    animation: lumiqSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .lumiq-modal-close {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    width: 36px;
-    height: 36px;
-    border: none;
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 50%;
-    font-size: 24px;
-    line-height: 1;
-    color: #666;
-    cursor: pointer;
-    transition: all 0.2s;
-    z-index: 1;
+    position: absolute !important;
+    top: 15px !important;
+    right: 15px !important;
+    width: 36px !important;
+    height: 36px !important;
+    border: none !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 50% !important;
+    font-size: 24px !important;
+    line-height: 1 !important;
+    color: #666 !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+    z-index: 1 !important;
 }
 
 .lumiq-modal-close:hover {
-    background: rgba(0, 0, 0, 0.1);
-    color: #000;
-    transform: rotate(90deg);
+    background: rgba(0, 0, 0, 0.1) !important;
+    color: #000 !important;
+    transform: rotate(90deg) !important;
 }
 
 /* Modal Header */
 .lumiq-modal-header {
-    text-align: center;
-    padding: 40px 30px 30px;
-    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-    color: #fff;
+    text-align: center !important;
+    padding: 40px 30px 30px !important;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%) !important;
+    color: #fff !important;
 }
 
 .lumiq-modal-icon {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 15px;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    width: 60px !important;
+    height: 60px !important;
+    margin: 0 auto 15px !important;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)) !important;
 }
 
 .lumiq-modal-header h3 {
-    font-size: 24px;
-    font-weight: 700;
-    margin: 0 0 8px 0;
+    font-size: 24px !important;
+    font-weight: 700 !important;
+    margin: 0 0 8px 0 !important;
 }
 
 .lumiq-modal-header p {
-    font-size: 14px;
-    margin: 0;
-    opacity: 0.95;
+    font-size: 14px !important;
+    margin: 0 !important;
+    opacity: 0.95 !important;
 }
 
-/* Form */
+/* ==========================================
+   FORMULÁRIO
+   ========================================== */
+
 .lumiq-form {
-    padding: 30px;
+    padding: 30px !important;
 }
 
 .lumiq-form-group {
-    margin-bottom: 20px;
+    margin-bottom: 20px !important;
 }
 
 .lumiq-form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
+    display: block !important;
+    margin-bottom: 8px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #333 !important;
 }
 
 .lumiq-form-group input,
 .lumiq-form-group textarea {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 15px;
-    font-family: inherit;
-    transition: all 0.2s;
-    outline: none;
+    width: 100% !important;
+    padding: 12px 16px !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 8px !important;
+    font-size: 15px !important;
+    font-family: inherit !important;
+    transition: all 0.2s !important;
+    outline: none !important;
 }
 
 .lumiq-form-group input:focus,
 .lumiq-form-group textarea:focus {
-    border-color: #25D366;
-    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+    border-color: #25D366 !important;
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1) !important;
 }
 
 .lumiq-form-group textarea {
-    resize: vertical;
-    min-height: 80px;
+    resize: vertical !important;
+    min-height: 80px !important;
 }
 
 .lumiq-form-submit {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
+    width: 100% !important;
+    padding: 16px !important;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    position: relative !important;
 }
 
 .lumiq-form-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4) !important;
 }
 
 .lumiq-form-submit:active {
-    transform: translateY(0);
+    transform: translateY(0) !important;
 }
 
 .lumiq-form-submit:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
+    opacity: 0.7 !important;
+    cursor: not-allowed !important;
 }
 
 .lumiq-form-privacy {
-    margin-top: 15px;
-    font-size: 12px;
-    color: #999;
-    text-align: center;
+    margin-top: 15px !important;
+    font-size: 12px !important;
+    color: #999 !important;
+    text-align: center !important;
 }
 
-/* Success Message */
+/* ==========================================
+   MENSAGEM DE SUCESSO
+   ========================================== */
+
 .lumiq-success {
-    padding: 40px 30px;
-    text-align: center;
+    padding: 40px 30px !important;
+    text-align: center !important;
 }
 
 .lumiq-success-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 20px;
-    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-    font-weight: bold;
-    animation: lumiqPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    width: 80px !important;
+    height: 80px !important;
+    margin: 0 auto 20px !important;
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%) !important;
+    color: #fff !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 48px !important;
+    font-weight: bold !important;
+    animation: lumiqPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
 }
 
 .lumiq-success h3 {
-    font-size: 24px;
-    margin: 0 0 10px 0;
-    color: #333;
+    font-size: 24px !important;
+    margin: 0 0 10px 0 !important;
+    color: #333 !important;
 }
 
 .lumiq-success p {
-    margin: 0 0 10px 0;
-    color: #666;
+    margin: 0 0 10px 0 !important;
+    color: #666 !important;
 }
 
 .lumiq-redirect-msg {
-    font-size: 14px;
-    color: #25D366;
-    font-weight: 600;
+    font-size: 14px !important;
+    color: #25D366 !important;
+    font-weight: 600 !important;
 }
 
-/* Animations */
+/* ==========================================
+   ANIMAÇÕES
+   ========================================== */
+
 @keyframes lumiqFadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -346,60 +485,72 @@
 
 /* Spinner */
 .lumiq-spinner {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    animation: lumiqSpin 0.6s linear infinite;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 50% !important;
+    border-top-color: #fff !important;
+    animation: lumiqSpin 0.6s linear infinite !important;
 }
 
 @keyframes lumiqSpin {
     to { transform: rotate(360deg); }
 }
 
-/* Mobile Responsive */
+/* ==========================================
+   RESPONSIVO - MOBILE
+   ========================================== */
+
 @media (max-width: 640px) {
     .lumiq-widget {
-        bottom: 15px;
+        bottom: 15px !important;
     }
     
     .lumiq-widget[data-position="right"] {
-        right: 15px;
+        right: 15px !important;
     }
     
     .lumiq-widget[data-position="left"] {
-        left: 15px;
+        left: 15px !important;
     }
     
-    .lumiq-widget-button {
-        width: 56px;
-        height: 56px;
+    .lumiq-widget-button,
+    #lumiq-widget-button {
+        width: 56px !important;
+        height: 56px !important;
+        min-width: 56px !important;
+        min-height: 56px !important;
+        max-width: 56px !important;
+        max-height: 56px !important;
     }
     
-    .lumiq-widget-icon {
-        width: 28px;
-        height: 28px;
+    .lumiq-widget-icon,
+    .lumiq-widget-button svg {
+        width: 28px !important;
+        height: 28px !important;
     }
     
     .lumiq-modal {
-        padding: 10px;
+        padding: 10px !important;
     }
     
     .lumiq-modal-content {
-        max-height: 95vh;
+        max-height: 95vh !important;
     }
     
     .lumiq-form {
-        padding: 20px;
+        padding: 20px !important;
     }
 }
 
-/* Accessibility */
+/* ==========================================
+   ACESSIBILIDADE
+   ========================================== */
+
 .lumiq-widget-button:focus-visible,
 .lumiq-modal-close:focus-visible,
 .lumiq-form-submit:focus-visible {
-    outline: 3px solid #25D366;
-    outline-offset: 2px;
+    outline: 3px solid #25D366 !important;
+    outline-offset: 2px !important;
 }
