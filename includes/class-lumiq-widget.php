@@ -59,10 +59,14 @@ class Lumiq_Widget {
         );
         
         // Passar dados para o JavaScript
-        wp_localize_script('lumiq-frontend-js', 'lumiqFrontend', array(
-            'ajax_url' => admin_url('admin-ajax.php'),
+        wp_localize_script('lumiq-frontend-js', 'lumiqConfig', array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('lumiq_frontend_nonce'),
-            'capture_type' => get_option('lumiq_capture_type', 'form')
+            'captureType' => get_option('lumiq_capture_type', 'form'),
+            'buttonColor' => get_option('lumiq_button_color', '#25D366'),
+            'buttonPosition' => get_option('lumiq_button_position', 'right'),
+            'buttonSize' => get_option('lumiq_button_size', 'medium'),
+            'teamId' => get_option('lumiq_team_id', '')
         ));
     }
     
@@ -82,11 +86,21 @@ class Lumiq_Widget {
         
         $button_text = get_option('lumiq_button_text', 'Fale Conosco');
         $capture_type = get_option('lumiq_capture_type', 'form');
+        $button_position = get_option('lumiq_button_position', 'right');
+        $button_size = get_option('lumiq_button_size', 'medium');
+        $button_color = get_option('lumiq_button_color', '#25D366');
         
         ?>
         <!-- LUMIQ WhatsApp Widget -->
-        <div id="lumiq-widget" class="lumiq-widget" data-capture-type="<?php echo esc_attr($capture_type); ?>">
-            <button id="lumiq-widget-button" class="lumiq-widget-button" aria-label="<?php echo esc_attr($button_text); ?>">
+        <div id="lumiq-widget" 
+             class="lumiq-widget" 
+             data-capture-type="<?php echo esc_attr($capture_type); ?>"
+             data-position="<?php echo esc_attr($button_position); ?>">
+            <button id="lumiq-widget-button" 
+                    class="lumiq-widget-button" 
+                    data-size="<?php echo esc_attr($button_size); ?>"
+                    style="--lumiq-color: <?php echo esc_attr($button_color); ?>"
+                    aria-label="<?php echo esc_attr($button_text); ?>">
                 <svg viewBox="0 0 32 32" class="lumiq-widget-icon">
                     <path fill="currentColor" d="M16 0C7.163 0 0 7.163 0 16c0 2.825.737 5.477 2.024 7.777L.08 30.105l6.528-1.904A15.923 15.923 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.547 0-4.955-.717-7.011-1.952l-.501-.296-5.189 1.515 1.54-5.024-.325-.52A13.276 13.276 0 012.667 16c0-7.363 5.971-13.333 13.333-13.333S29.333 8.637 29.333 16 23.363 29.333 16 29.333z"/>
                     <path fill="currentColor" d="M22.838 18.638c-.375-.187-2.225-1.1-2.575-1.225-.35-.125-.6-.187-.85.187-.25.375-.975 1.225-1.2 1.475-.225.25-.45.275-.825.1-.375-.187-1.587-.588-3.025-1.875-1.125-1-1.875-2.225-2.1-2.6-.225-.375-.025-.575.162-.762.163-.163.375-.425.562-.638.188-.212.25-.375.375-.625s.063-.475-.037-.663c-.1-.187-.85-2.05-1.163-2.8-.312-.75-.625-.65-.85-.65-.225 0-.475-.025-.725-.025s-.675.1-.975.475-.975.95-.975 2.325.975 2.7 1.113 2.888c.137.187 1.975 3.012 4.787 4.225.663.287 1.188.462 1.588.587.675.213 1.288.187 1.775.113.538-.088 1.65-.675 1.888-1.325.237-.65.237-1.2.162-1.325-.075-.125-.275-.2-.625-.375z"/>
