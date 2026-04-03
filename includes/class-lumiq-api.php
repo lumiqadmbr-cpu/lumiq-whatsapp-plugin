@@ -22,25 +22,42 @@ class Lumiq_API {
      * @return array|false
      */
     public function validate_key($api_key) {
-        $response = wp_remote_post($this->api_url . '/validate', array(
+        $response = wp_remote_post($this->api_url . '/validate-key', array(
             'timeout' => 15,
             'headers' => array(
                 'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer ' . $api_key
             ),
             'body' => json_encode(array(
-                'api_key' => $api_key
+                'key' => $api_key
             ))
         ));
         
         if (is_wp_error($response)) {
             error_log('LUMIQ API Error: ' . $response->get_error_message());
-            return false;
+            return array(
+                'valid' => false,
+                'message' => 'Erro de conexão: ' . $response->get_error_message()
+            );
         }
         
+        $code = wp_remote_retrieve_response_code($response);
         $body = wp_remote_retrieve_body($response);
         $data = json_decode($body, true);
         
-        return $data;
+        if ($code !== 200) {
+            return array(
+                'valid' => false,
+                'message' => $data['message'] ?? 'Erro ao validar chave'
+            );
+        }
+        
+        return array(
+            'valid' => true,
+            'message' => 'Chave validada com sucesso!',
+            'user_name' => $data['user_name'] ?? '',
+            'teams' => $data['teams'] ?? array()
+        );
     }
     
     /**
@@ -63,10 +80,16 @@ class Lumiq_API {
             return false;
         }
         
+        $code = wp_remote_retrieve_response_code($response);
+        
+        if ($code !== 200) {
+            return false;
+        }
+        
         $body = wp_remote_retrieve_body($response);
         $data = json_decode($body, true);
         
-        return $data;
+        return $data['teams'] ?? $data;
     }
     
     /**
@@ -96,8 +119,13 @@ class Lumiq_API {
             return false;
         }
         
+        $code = wp_remote_retrieve_response_code($response);
         $body = wp_remote_retrieve_body($response);
         $data = json_decode($body, true);
+        
+        if ($code !== 200) {
+            return false;
+        }
         
         return $data;
     }
