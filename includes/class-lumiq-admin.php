@@ -47,7 +47,7 @@ class Lumiq_Admin {
             'lumiq-admin-js',
             LUMIQ_PLUGIN_URL . 'assets/js/admin.js',
             array('jquery'),
-            LUMIQ_VERSION,
+            time(),
             true
         );
         
