@@ -1,90 +1,370 @@
-/**
- * LUMIQ WhatsApp - Admin Styles
- */
+/* ====================================
+   LUMIQ WhatsApp - Admin Styles
+   ==================================== */
 
-/* Help Box */
-.lumiq-help-box {
-    background: #f0f6fc;
-    border: 1px solid #d0e4f7;
-    border-left: 4px solid #25D366;
+.lumiq-admin-wrap {
+    background: #f0f0f1;
+    margin: 20px 0 20px -20px;
     padding: 20px;
-    border-radius: 4px;
-    margin-top: 30px;
 }
 
-.lumiq-help-box h2 {
-    margin-top: 0;
-    color: #1e4620;
-    font-size: 18px;
+.lumiq-header {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.lumiq-help-box h3 {
-    color: #2c5e2e;
+.lumiq-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.lumiq-content {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 20px;
+    align-items: start;
+}
+
+@media (max-width: 1280px) {
+    .lumiq-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Cards */
+.lumiq-card {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.lumiq-card h2 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    color: #1e1e1e;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f1;
+}
+
+.lumiq-card h3 {
+    margin: 0 0 15px 0;
     font-size: 16px;
-    margin-top: 20px;
+    color: #1e1e1e;
 }
 
-.lumiq-help-box ol,
-.lumiq-help-box ul {
-    margin-left: 20px;
+/* Input Group */
+.lumiq-input-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
-.lumiq-help-box li {
-    margin-bottom: 8px;
-    line-height: 1.6;
+.lumiq-input-group .regular-text {
+    flex: 1;
 }
 
-.lumiq-help-box a {
-    color: #25D366;
-    text-decoration: none;
-    font-weight: 600;
+/* Toggle Switch */
+.lumiq-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
 }
 
-.lumiq-help-box a:hover {
-    text-decoration: underline;
+.lumiq-toggle input[type="checkbox"] {
+    display: none;
 }
 
-/* Buttons */
-#lumiq_validate_key,
-#lumiq_load_teams {
-    background: #25D366 !important;
-    border-color: #20BA5A !important;
-    color: white !important;
-    text-shadow: none !important;
-    box-shadow: none !important;
+.lumiq-toggle-slider {
+    position: relative;
+    width: 50px;
+    height: 26px;
+    background: #ccc;
+    border-radius: 13px;
+    transition: background 0.3s;
 }
 
-#lumiq_validate_key:hover,
-#lumiq_load_teams:hover {
-    background: #20BA5A !important;
-    border-color: #1da851 !important;
+.lumiq-toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.3s;
 }
 
-#lumiq_validate_key:disabled,
-#lumiq_load_teams:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+.lumiq-toggle input[type="checkbox"]:checked ~ .lumiq-toggle-slider {
+    background: #25D366;
 }
 
-/* Status Messages */
-#lumiq_validate_status {
-    font-weight: 600;
-    font-size: 14px;
+.lumiq-toggle input[type="checkbox"]:checked ~ .lumiq-toggle-slider::before {
+    transform: translateX(24px);
 }
 
-/* Select destacado */
-#lumiq_team_id:focus {
+/* Button Styles Selector */
+.lumiq-button-styles {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.lumiq-style-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.lumiq-style-option:hover {
     border-color: #25D366;
-    box-shadow: 0 0 0 1px #25D366;
+    background: #f9f9f9;
 }
 
-/* Loading Spinner */
-#lumiq_teams_loading .spinner {
-    background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="%2325D366" stroke-width="2" stroke-dasharray="50" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0 10 10" to="360 10 10" dur="1s" repeatCount="indefinite"/></circle></svg>') center center no-repeat;
-    background-size: 20px 20px;
+.lumiq-style-option input[type="radio"] {
+    display: none;
 }
 
-/* Notice customizado */
-.notice.notice-success {
-    border-left-color: #25D366;
+.lumiq-style-option input[type="radio"]:checked ~ .lumiq-style-preview {
+    transform: scale(1.1);
+}
+
+.lumiq-style-option input[type="radio"]:checked ~ span {
+    font-weight: bold;
+    color: #25D366;
+}
+
+.lumiq-style-preview {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+}
+
+.lumiq-style-circle svg {
+    border-radius: 50%;
+}
+
+.lumiq-style-rounded svg {
+    border-radius: 12px;
+}
+
+.lumiq-style-square svg {
+    border-radius: 0;
+}
+
+/* Preview Section */
+.lumiq-preview {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lumiq-preview-phone {
+    width: 280px;
+    height: 550px;
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.lumiq-preview-phone::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 25px;
+    background: white;
+    border-radius: 0 0 20px 20px;
+    z-index: 10;
+}
+
+.lumiq-preview-screen {
+    width: 100%;
+    height: 100%;
+    background: #f5f5f5;
+    position: relative;
+}
+
+#lumiq-preview-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--lumiq-color, #25D366);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+#lumiq-preview-button:hover {
+    transform: scale(1.1);
+}
+
+#lumiq-preview-button[data-style="rounded"] {
+    border-radius: 15px;
+}
+
+#lumiq-preview-button[data-style="square"] {
+    border-radius: 0;
+}
+
+#lumiq-preview-button[data-size="small"] {
+    width: 50px;
+    height: 50px;
+}
+
+#lumiq-preview-button[data-size="medium"] {
+    width: 60px;
+    height: 60px;
+}
+
+#lumiq-preview-button[data-size="large"] {
+    width: 70px;
+    height: 70px;
+}
+
+#lumiq-preview-button .lumiq-widget-icon {
+    width: 30px;
+    height: 30px;
+    color: white;
+}
+
+/* Animações do Preview */
+#lumiq-preview-button[data-animation="pulse"] {
+    animation: lumiq-pulse 2s infinite;
+}
+
+#lumiq-preview-button[data-animation="shake"] {
+    animation: lumiq-shake 3s infinite;
+}
+
+#lumiq-preview-button[data-animation="bounce"] {
+    animation: lumiq-bounce 2s infinite;
+}
+
+@keyframes lumiq-pulse {
+    0%, 100% {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    50% {
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.6), 0 0 0 10px rgba(37, 211, 102, 0.2);
+    }
+}
+
+@keyframes lumiq-shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+@keyframes lumiq-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Help Links */
+.lumiq-help-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.lumiq-help-links li {
+    margin-bottom: 10px;
+}
+
+.lumiq-help-links a {
+    text-decoration: none;
+    color: #2271b1;
+    display: block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.lumiq-help-links a:hover {
+    background: #f0f0f1;
+}
+
+/* Stats */
+.lumiq-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.lumiq-stat {
+    text-align: center;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.lumiq-stat-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #25D366;
+    margin-bottom: 5px;
+}
+
+.lumiq-stat-label {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Sidebar */
+.lumiq-sidebar {
+    position: sticky;
+    top: 32px;
+}
+
+/* Responsivo */
+@media (max-width: 782px) {
+    .lumiq-admin-wrap {
+        margin-left: -10px;
+    }
+    
+    .lumiq-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .lumiq-sidebar {
+        position: static;
+    }
 }
