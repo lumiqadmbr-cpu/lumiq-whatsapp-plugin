@@ -266,8 +266,8 @@ class Lumiq_Admin {
             
             <div class="lumiq-content">
                 <div class="lumiq-main">
-                    <form method="post" action="" id="lumiq-settings-form">
-                        <?php wp_nonce_field('lumiq_settings_nonce'); ?>
+                    <form method="post" action="options.php" id="lumiq-settings-form">
+    <?php settings_fields('lumiq_settings'); ?>
                         
                         <!-- Conexão -->
                         <div class="lumiq-card">
