@@ -66,6 +66,8 @@ class Lumiq_Widget {
             'buttonColor' => get_option('lumiq_button_color', '#25D366'),
             'buttonPosition' => get_option('lumiq_button_position', 'right'),
             'buttonSize' => get_option('lumiq_button_size', 'medium'),
+            'buttonStyle' => get_option('lumiq_button_style', 'circle'),
+            'buttonAnimation' => get_option('lumiq_button_animation', 'pulse'),
             'teamId' => get_option('lumiq_team_id', '')
         ));
     }
@@ -88,6 +90,8 @@ class Lumiq_Widget {
         $capture_type = get_option('lumiq_capture_type', 'form');
         $button_position = get_option('lumiq_button_position', 'right');
         $button_size = get_option('lumiq_button_size', 'medium');
+        $button_style = get_option('lumiq_button_style', 'circle');
+        $button_animation = get_option('lumiq_button_animation', 'pulse');
         $button_color = get_option('lumiq_button_color', '#25D366');
         
         ?>
@@ -97,15 +101,15 @@ class Lumiq_Widget {
              data-capture-type="<?php echo esc_attr($capture_type); ?>"
              data-position="<?php echo esc_attr($button_position); ?>">
             <button id="lumiq-widget-button" 
-                    class="lumiq-widget-button" 
+                    class="lumiq-widget-button lumiq-style-<?php echo esc_attr($button_style); ?> lumiq-animation-<?php echo esc_attr($button_animation); ?>"
                     data-size="<?php echo esc_attr($button_size); ?>"
-                    style="--lumiq-color: <?php echo esc_attr($button_color); ?>"
+                    style="background-color: <?php echo esc_attr($button_color); ?>"
                     aria-label="<?php echo esc_attr($button_text); ?>">
-                <svg viewBox="0 0 32 32" class="lumiq-widget-icon">
-                    <path fill="currentColor" d="M16 0C7.163 0 0 7.163 0 16c0 2.825.737 5.477 2.024 7.777L.08 30.105l6.528-1.904A15.923 15.923 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.547 0-4.955-.717-7.011-1.952l-.501-.296-5.189 1.515 1.54-5.024-.325-.52A13.276 13.276 0 012.667 16c0-7.363 5.971-13.333 13.333-13.333S29.333 8.637 29.333 16 23.363 29.333 16 29.333z"/>
-                    <path fill="currentColor" d="M22.838 18.638c-.375-.187-2.225-1.1-2.575-1.225-.35-.125-.6-.187-.85.187-.25.375-.975 1.225-1.2 1.475-.225.25-.45.275-.825.1-.375-.187-1.587-.588-3.025-1.875-1.125-1-1.875-2.225-2.1-2.6-.225-.375-.025-.575.162-.762.163-.163.375-.425.562-.638.188-.212.25-.375.375-.625s.063-.475-.037-.663c-.1-.187-.85-2.05-1.163-2.8-.312-.75-.625-.65-.85-.65-.225 0-.475-.025-.725-.025s-.675.1-.975.475-.975.95-.975 2.325.975 2.7 1.113 2.888c.137.187 1.975 3.012 4.787 4.225.663.287 1.188.462 1.588.587.675.213 1.288.187 1.775.113.538-.088 1.65-.675 1.888-1.325.237-.65.237-1.2.162-1.325-.075-.125-.275-.2-.625-.375z"/>
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 0C7.164 0 0 7.164 0 16c0 2.825.737 5.477 2.024 7.777L.08 30.105l6.528-1.904A15.923 15.923 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0z" fill="#fff"/>
+                    <path d="M25.5 15.5c0 5.247-4.253 9.5-9.5 9.5a9.46 9.46 0 01-4.849-1.337l-3.396.891.915-3.341A9.453 9.453 0 016.5 15.5c0-5.247 4.253-9.5 9.5-9.5s9.5 4.253 9.5 9.5z" fill="currentColor"/>
+                    <path d="M20.347 18.24c-.271-.135-1.605-.792-1.853-.882-.248-.09-.429-.135-.61.135-.18.27-.702.882-.86 1.062-.158.18-.316.203-.587.067-.271-.135-1.144-.421-2.178-1.343-.806-.717-1.35-1.603-1.508-1.873-.158-.27-.017-.416.118-.55.122-.121.27-.316.405-.473.135-.158.18-.27.27-.45.09-.18.045-.338-.022-.473-.067-.135-.61-1.47-.835-2.014-.22-.529-.443-.457-.61-.466-.158-.008-.338-.01-.518-.01s-.473.067-.72.338c-.247.27-.946.925-.946 2.256s.968 2.618 1.103 2.798c.135.18 1.901 2.902 4.605 4.07.645.28 1.148.447 1.541.572.648.206.237.178 1.615.106.49-.054 1.505-.615 1.717-1.208.212-.594.212-1.103.148-1.208-.064-.105-.245-.17-.516-.305z" fill="#fff"/>
                 </svg>
-                <span class="lumiq-widget-text"><?php echo esc_html($button_text); ?></span>
             </button>
         </div>
         
@@ -117,8 +121,10 @@ class Lumiq_Widget {
                 <button class="lumiq-modal-close" aria-label="Fechar">×</button>
                 
                 <div class="lumiq-modal-header">
-                    <svg viewBox="0 0 32 32" class="lumiq-modal-icon">
-                        <path fill="currentColor" d="M16 0C7.163 0 0 7.163 0 16c0 2.825.737 5.477 2.024 7.777L.08 30.105l6.528-1.904A15.923 15.923 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333c-2.547 0-4.955-.717-7.011-1.952l-.501-.296-5.189 1.515 1.54-5.024-.325-.52A13.276 13.276 0 012.667 16c0-7.363 5.971-13.333 13.333-13.333S29.333 8.637 29.333 16 23.363 29.333 16 29.333z"/>
+                    <svg width="48" height="48" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 0C7.164 0 0 7.164 0 16c0 2.825.737 5.477 2.024 7.777L.08 30.105l6.528-1.904A15.923 15.923 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0z" fill="<?php echo esc_attr($button_color); ?>"/>
+                        <path d="M25.5 15.5c0 5.247-4.253 9.5-9.5 9.5a9.46 9.46 0 01-4.849-1.337l-3.396.891.915-3.341A9.453 9.453 0 016.5 15.5c0-5.247 4.253-9.5 9.5-9.5s9.5 4.253 9.5 9.5z" fill="<?php echo esc_attr($button_color); ?>"/>
+                        <path d="M20.347 18.24c-.271-.135-1.605-.792-1.853-.882-.248-.09-.429-.135-.61.135-.18.27-.702.882-.86 1.062-.158.18-.316.203-.587.067-.271-.135-1.144-.421-2.178-1.343-.806-.717-1.35-1.603-1.508-1.873-.158-.27-.017-.416.118-.55.122-.121.27-.316.405-.473.135-.158.18-.27.27-.45.09-.18.045-.338-.022-.473-.067-.135-.61-1.47-.835-2.014-.22-.529-.443-.457-.61-.466-.158-.008-.338-.01-.518-.01s-.473.067-.72.338c-.247.27-.946.925-.946 2.256s.968 2.618 1.103 2.798c.135.18 1.901 2.902 4.605 4.07.645.28 1.148.447 1.541.572.648.206.237.178 1.615.106.49-.054 1.505-.615 1.717-1.208.212-.594.212-1.103.148-1.208-.064-.105-.245-.17-.516-.305z" fill="#fff"/>
                     </svg>
                     <h3>Fale Conosco</h3>
                     <p>Preencha os dados abaixo e nossa equipe entrará em contato</p>
