@@ -1,53 +1,37 @@
-/**
- * LUMIQ WhatsApp - Admin JavaScript
- * Gerencia validação de API Key e carregamento de equipes
- */
-
 jQuery(document).ready(function($) {
     
-    console.log('LUMIQ Admin JS carregado!');
-    console.log('lumiqAdmin:', lumiqAdmin);
+    console.log('LUMIQ JS carregado!');
     
-    /**
-     * Botão "Ver/Ocultar" API Key (OLHINHO)
-     */
+    // OLHINHO
     $('#lumiq_toggle_key').on('click', function(e) {
         e.preventDefault();
-        console.log('Olhinho clicado!');
-        
-        const $input = $('#lumiq_api_key');
-        const $icon = $(this).find('.dashicons');
+        var $input = $('#lumiq_api_key');
+        var $icon = $(this).find('.dashicons');
         
         if ($input.attr('type') === 'password') {
             $input.attr('type', 'text');
             $icon.removeClass('dashicons-visibility').addClass('dashicons-hidden');
-            console.log('Senha visível');
         } else {
             $input.attr('type', 'password');
             $icon.removeClass('dashicons-hidden').addClass('dashicons-visibility');
-            console.log('Senha oculta');
         }
     });
     
-    /**
-     * Botão "Validar" API Key
-     */
+    // VALIDAR
     $('#lumiq_validate_key').on('click', function(e) {
         e.preventDefault();
-        console.log('Validar clicado!');
         
-        const apiKey = $('#lumiq_api_key').val().trim();
-        const $button = $(this);
-        const $status = $('#lumiq_validate_status');
+        var apiKey = $('#lumiq_api_key').val().trim();
+        var $button = $(this);
+        var $status = $('#lumiq_validate_status');
         
         if (!apiKey) {
-            $status.html('<span style="color: #dc3545;">❌ Informe a API Key</span>');
+            $status.html('<span style="color: #dc3545;">❌ Informe a API Key</span>').show();
             return;
         }
         
-        // Loading
         $button.prop('disabled', true).text('Validando...');
-        $status.html('<span style="color: #6c757d;">⏳ Verificando...</span>');
+        $status.html('<span style="color: #6c757d;">⏳ Verificando...</span>').show();
         
         $.ajax({
             url: lumiqAdmin.ajax_url,
@@ -58,23 +42,17 @@ jQuery(document).ready(function($) {
                 api_key: apiKey
             },
             success: function(response) {
-                console.log('Validate response:', response);
-                
                 if (response.success) {
                     $status.html('<span style="color: #28a745;">✅ ' + response.data.message + '</span>');
-                    
-                    // Auto-carrega equipes após validação bem-sucedida
                     setTimeout(function() {
                         $('#lumiq_load_teams').trigger('click');
                     }, 500);
-                    
                 } else {
-                    $status.html('<span style="color: #dc3545;">❌ ' + (response.data.message || 'Chave inválida') + '</span>');
+                    $status.html('<span style="color: #dc3545;">❌ ' + (response.data.message || 'Erro') + '</span>');
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error:', xhr.responseText);
-                $status.html('<span style="color: #dc3545;">❌ Erro de conexão: ' + error + '</span>');
+            error: function() {
+                $status.html('<span style="color: #dc3545;">❌ Erro de conexão</span>');
             },
             complete: function() {
                 $button.prop('disabled', false).text('Validar');
@@ -82,25 +60,21 @@ jQuery(document).ready(function($) {
         });
     });
     
-    /**
-     * Botão "Carregar Equipes"
-     */
+    // CARREGAR EQUIPES
     $('#lumiq_load_teams').on('click', function(e) {
         e.preventDefault();
-        console.log('Carregar equipes clicado!');
         
-        const apiKey = $('#lumiq_api_key').val().trim();
-        const $button = $(this);
-        const $select = $('#lumiq_team_id');
-        const $loading = $('#lumiq_teams_loading');
+        var apiKey = $('#lumiq_api_key').val().trim();
+        var $button = $(this);
+        var $select = $('#lumiq_team_id');
+        var $loading = $('#lumiq_teams_loading');
+        var currentTeamId = $select.val();
         
         if (!apiKey) {
-            alert('⚠️ Por favor, informe a API Key primeiro!');
-            $('#lumiq_api_key').focus();
+            alert('Informe a API Key!');
             return;
         }
         
-        // Mostra loading
         $button.prop('disabled', true);
         $loading.show();
         
@@ -113,59 +87,30 @@ jQuery(document).ready(function($) {
                 api_key: apiKey
             },
             success: function(response) {
-                console.log('Teams response:', response);
-                
                 if (response.success && response.data.teams) {
-                    const teams = response.data.teams;
+                    var teams = response.data.teams;
+                    $select.html('<option value="">Selecione...</option>');
                     
-                    // Salva seleção atual
-                    const currentValue = $select.val();
-                    
-                    // Limpa select
-                    $select.html('<option value="">Selecione uma equipe...</option>');
-                    
-                    // Popula com equipes
-                    teams.forEach(function(team) {
-                        const isActive = team.is_active !== false;
-                        const label = team.name + (isActive ? '' : ' (Inativa)');
+                    $.each(teams, function(i, team) {
+                        var $option = $('<option></option>')
+                            .val(team.id)
+                            .text(team.name)
+                            .attr('data-name', team.name);
                         
-                        $select.append(
-                            $('<option></option>')
-                                .val(team.id)
-                                .text(label)
-                                .prop('disabled', !isActive)
-                        );
+                        if (team.id === currentTeamId) {
+                            $option.prop('selected', true);
+                        }
+                        
+                        $select.append($option);
                     });
                     
-                    // Restaura seleção se ainda existir
-                    if (currentValue) {
-                        $select.val(currentValue);
-                    }
-                    
-                    // Feedback visual
-                    $select.css('border-color', '#28a745');
-                    setTimeout(function() {
-                        $select.css('border-color', '');
-                    }, 2000);
-                    
-                    // Mensagem de sucesso
-                    const msg = teams.length === 1 
-                        ? '✅ 1 equipe carregada!' 
-                        : '✅ ' + teams.length + ' equipes carregadas!';
-                    
-                    showNotice(msg, 'success');
-                    
+                    alert('✅ ' + teams.length + ' equipes carregadas!');
                 } else {
-                    const errorMsg = response.data && response.data.message 
-                        ? response.data.message 
-                        : 'Erro ao carregar equipes';
-                    
-                    showNotice('❌ ' + errorMsg, 'error');
+                    alert('❌ Erro ao carregar equipes');
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error:', xhr.responseText);
-                showNotice('❌ Erro ao conectar: ' + error, 'error');
+            error: function() {
+                alert('❌ Erro de conexão');
             },
             complete: function() {
                 $button.prop('disabled', false);
@@ -174,56 +119,41 @@ jQuery(document).ready(function($) {
         });
     });
     
-    /**
-     * Auto-carrega equipes se API Key já existe
-     */
-    const apiKeyValue = $('#lumiq_api_key').val().trim();
-    if (apiKeyValue && $('#lumiq_team_id option').length <= 2) {
-        // Aguarda 500ms para dar tempo da página carregar
-        setTimeout(function() {
-            console.log('Auto-carregando equipes...');
-            $('#lumiq_load_teams').trigger('click');
-        }, 500);
-    }
-    
-    /**
-     * Helper: Mostrar notificação WordPress-style
-     */
-    function showNotice(message, type) {
-        const $notice = $('<div class="notice notice-' + type + ' is-dismissible"><p>' + message + '</p></div>');
-        
-        $('.wrap h1').after($notice);
-        
-        // Auto-remove após 5 segundos
-        setTimeout(function() {
-            $notice.fadeOut(function() {
-                $(this).remove();
-            });
-        }, 5000);
-    }
-    
-    /**
-     * Validação antes de salvar
-     */
-    $('form').on('submit', function(e) {
-        const apiKey = $('#lumiq_api_key').val().trim();
-        const teamId = $('#lumiq_team_id').val();
-        
-        if (!apiKey) {
-            e.preventDefault();
-            alert('⚠️ Por favor, informe a API Key!');
-            $('#lumiq_api_key').focus();
-            return false;
-        }
-        
-        if (!teamId) {
-            const confirmSubmit = confirm('⚠️ Nenhuma equipe selecionada. Leads não serão distribuídos! Continuar mesmo assim?');
-            if (!confirmSubmit) {
-                e.preventDefault();
-                return false;
-            }
-        }
-        
-        return true;
+    // Atualizar o campo hidden do nome da equipe quando selecionar
+    $('#lumiq_team_id').on('change', function() {
+        var selectedOption = $(this).find('option:selected');
+        var teamName = selectedOption.text();
+        $('#lumiq_team_name').val(teamName);
     });
+    
+    // PREVIEW DO BOTÃO - Atualizar em tempo real
+    function updatePreview() {
+        var $preview = $('#lumiq-preview-button');
+        var size = $('#lumiq_button_size').val();
+        var style = $('input[name="lumiq_button_style"]:checked').val();
+        var animation = $('#lumiq_button_animation').val();
+        var color = $('#lumiq_button_color').val();
+        var position = $('#lumiq_button_position').val();
+        
+        // Atualizar atributos
+        $preview.attr('data-size', size);
+        $preview.attr('data-style', style);
+        $preview.attr('data-animation', animation);
+        $preview.css('--lumiq-color', color);
+        
+        // Atualizar posição
+        if (position === 'left') {
+            $preview.css({'left': '20px', 'right': 'auto'});
+        } else {
+            $preview.css({'right': '20px', 'left': 'auto'});
+        }
+    }
+    
+    // Listeners para atualizar preview
+    $('#lumiq_button_size, #lumiq_button_animation, #lumiq_button_position').on('change', updatePreview);
+    $('#lumiq_button_color').on('input', updatePreview);
+    $('input[name="lumiq_button_style"]').on('change', updatePreview);
+    
+    // Inicializar preview
+    updatePreview();
 });
